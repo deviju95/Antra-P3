@@ -2,7 +2,6 @@
 const DOM_SELECTOR = {
   INPUT_BAR_FORM: '#album-search .input-bar__form',
   INPUT_BAR_INPUT: '#album-search .input-bar__input',
-  ALBUM_SEARCH_CONTAINER: '.album-search__search-result-container',
   ALBUM_COUNT_WRAPPER: '.album-search__album-count-wrapper',
   ALBUM_LIST: '.album-search__album-list',
 };
