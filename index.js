@@ -50,7 +50,7 @@ function generateAlbumNode(albumData) {
   imgNode.src = artworkUrl100;
 
   titleNode.classList.add('album-search__title');
-  titleNode.innerHTML = `Album Title: ${collectionName}`;
+  titleNode.innerHTML = `${collectionName}`;
 
   listNode.append(imgNode, titleNode);
 
@@ -72,11 +72,21 @@ function renderAlbumList(albumList) {
 
 function inputHandler(event) {
   event.preventDefault();
+
   const inputElement = document.querySelector(DOM_SELECTOR.INPUT_BAR_INPUT);
   ARTIST_NAME = inputElement.value;
   console.log(ARTIST_NAME);
   fetchAlbumData().then((json) => generateAlbumCount(json.resultCount));
   fetchAlbumData().then((json) => renderAlbumList(json.results));
+}
+
+function validateInput() {
+  const input = document.querySelector(DOM_SELECTOR.INPUT_BAR_INPUT);
+
+  if (input === '') {
+    alert('Artist name must be filled out');
+    return false;
+  }
 }
 
 // INIT

@@ -4,22 +4,36 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/6c0f3e1602.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="styles.css" />
     <title>Document</title>
   </head>
   <body>
     <section id="album-search">
-      <form class="input-bar__form">
-        <input type="text" name="artist-name-input" class="input-bar__input" />
-        <input
-          type="submit"
-          name="artist-name-submit-btn"
-          class="input-bar__submit-btn"
-          value="Submit"
-        />
-      </form>
-      <div class="album-search__album-count-wrapper"></div>
-      <ul class="album-search__album-list"></ul>
+      <nav class="album-search__nav-bar">
+        <form class="input-bar__form">
+          <input
+            type="text"
+            name="artist-name-input"
+            class="input-bar__input"
+            required
+          />
+          <button
+            type="submit"
+            name="artist-name-submit-btn"
+            class="input-bar__submit-btn"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+      </nav>
+      <div class="album-search__search-result-container">
+        <div class="album-search__album-count-wrapper"></div>
+        <ul class="album-search__album-list"></ul>
+      </div>
     </section>
     <script src="index.js"></script>
   </body>
