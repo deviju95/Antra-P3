@@ -2,11 +2,10 @@
 const DOM_SELECTOR = {
   INPUT_BAR_FORM: '#album-search .input-bar__form',
   INPUT_BAR_INPUT: '#album-search .input-bar__input',
+  ALBUM_SEARCH_CONTAINER: '.album-search__search-result-container',
   ALBUM_COUNT_WRAPPER: '.album-search__album-count-wrapper',
   ALBUM_LIST: '.album-search__album-list',
 };
-
-let ARTIST_NAME = 'gaga';
 
 // APIs
 function fetchAlbumData() {
@@ -24,11 +23,21 @@ function render(element, data) {
   element.replaceChildren(data);
 }
 
-function generateAlbumCount(albumCount) {
+function generateLoader() {
+  const divNode = document.createElement('div');
+  divNode.classList.add('loading-spinner', 'fixed-center');
+
+  const element = document.querySelector(DOM_SELECTOR.ALBUM_LIST);
+  const data = divNode;
+
+  render(element, data);
+}
+
+function generateAlbumCount(albumCount, input) {
   const spanNode = document.createElement('span');
 
   spanNode.classList.add('album-search__album-count');
-  spanNode.innerHTML = `${albumCount} albums found.`;
+  spanNode.innerHTML = `${albumCount} results for "${input}"`;
 
   const element = document.querySelector(DOM_SELECTOR.ALBUM_COUNT_WRAPPER);
   const data = spanNode;
@@ -76,23 +85,16 @@ function inputHandler(event) {
   const inputElement = document.querySelector(DOM_SELECTOR.INPUT_BAR_INPUT);
   ARTIST_NAME = inputElement.value;
   console.log(ARTIST_NAME);
-  fetchAlbumData().then((json) => generateAlbumCount(json.resultCount));
-  fetchAlbumData().then((json) => renderAlbumList(json.results));
-}
 
-function validateInput() {
-  const input = document.querySelector(DOM_SELECTOR.INPUT_BAR_INPUT);
+  generateLoader();
 
-  if (input === '') {
-    alert('Artist name must be filled out');
-    return false;
-  }
+  fetchAlbumData().then((json) => {
+    generateAlbumCount(json.resultCount, ARTIST_NAME);
+    renderAlbumList(json.results);
+  });
 }
 
 // INIT
-fetchAlbumData().then((json) => generateAlbumCount(json.resultCount));
-fetchAlbumData().then((json) => renderAlbumList(json.results));
-
 document
   .querySelector(DOM_SELECTOR.INPUT_BAR_FORM)
   .addEventListener('submit', inputHandler);
