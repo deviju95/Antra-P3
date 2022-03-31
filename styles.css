@@ -67,7 +67,7 @@ body {
   position: fixed;
   width: 100%;
   z-index: 999;
-  box-shadow: 0 0 5px 5px var(--color-grey-light);
+  box-shadow: 0 0 5px 5px #b1b1b12c;
 }
 
 .input-bar__form {
@@ -84,7 +84,7 @@ body {
 
 .input-bar__input:focus {
   outline: none;
-  box-shadow: inset 0 0 3px 1px var(--color-grey-light);
+  box-shadow: inset 0 0 3px 1px #cfcfcf3c;
 }
 
 .input-bar__submit-btn {
@@ -92,6 +92,12 @@ body {
   background-color: transparent;
   font-size: 1.6rem;
   color: var(--color-black);
+  cursor: pointer;
+  transition: color ease-in-out 0.15s;
+}
+
+.input-bar__submit-btn:hover {
+  color: black;
 }
 
 .album-search__search-result-container {
@@ -144,4 +150,27 @@ body {
   .album-search__title {
     font-size: 1.6rem;
   }
+}
+
+.album-search__next-btn-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+}
+
+.album-search__next-btn{
+  background-color: transparent;
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 2.4rem;
+  cursor: pointer;
+  color: var(--color-grey-dark);
+  transition: color ease-in-out 0.15s;
+
+}
+
+.album-search__next-btn:hover{
+  color: var(--color-black);
 }

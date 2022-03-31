@@ -4,7 +4,13 @@ const DOM_SELECTOR = {
   INPUT_BAR_INPUT: '#album-search .input-bar__input',
   ALBUM_COUNT_WRAPPER: '.album-search__album-count-wrapper',
   ALBUM_LIST: '.album-search__album-list',
+  ALBUM_NEXT_BTN_WRAPPER: '.album-search__next-btn-wrapper',
+  ALBUM_NEXT_BTN: '.album-search__next-btn',
 };
+
+let ARTIST_NAME = '';
+let totalAlbums = [];
+let renderedAlbums = [];
 
 // APIs
 function fetchAlbumData() {
@@ -22,6 +28,21 @@ function render(element, data) {
   element.replaceChildren(data);
 }
 
+function inputHandler(event) {
+  event.preventDefault();
+
+  const inputElement = document.querySelector(DOM_SELECTOR.INPUT_BAR_INPUT);
+  ARTIST_NAME = inputElement.value;
+  console.log(ARTIST_NAME);
+
+  generateLoader();
+
+  fetchAlbumData().then((json) => {
+    generateAlbumCount(json.resultCount);
+    generateAlbumList(json.results);
+  });
+}
+
 function generateLoader() {
   const divNode = document.createElement('div');
   divNode.classList.add('loading-spinner', 'fixed-center');
@@ -32,11 +53,11 @@ function generateLoader() {
   render(element, data);
 }
 
-function generateAlbumCount(albumCount, input) {
+function generateAlbumCount(albumCount) {
   const spanNode = document.createElement('span');
 
   spanNode.classList.add('album-search__album-count');
-  spanNode.innerHTML = `${albumCount} results for "${input}"`;
+  spanNode.innerHTML = `Total of <b>${albumCount}</b> results for "${ARTIST_NAME}"`;
 
   const element = document.querySelector(DOM_SELECTOR.ALBUM_COUNT_WRAPPER);
   const data = spanNode;
@@ -65,32 +86,34 @@ function generateAlbumNode(albumData) {
   return listNode;
 }
 
-function renderAlbumList(albumList) {
-  const result = [];
-  for (let i = 0; i < albumList.length; i++) {
-    const albumNode = generateAlbumNode(albumList[i]);
-    result.push(albumNode);
-  }
+function generateAlbumList(albumList) {
+  totalAlbums = albumList.map((el) => generateAlbumNode(el));
+
+  renderAlbumList();
+}
+
+function renderAlbumList() {
+  if (totalAlbums.length > 12) generateNextAlbumBtn();
+  else
+    document.querySelector(DOM_SELECTOR.ALBUM_NEXT_BTN).style.display = 'none';
+
+  renderedAlbums = totalAlbums.splice(0, 12);
 
   const element = document.querySelector(DOM_SELECTOR.ALBUM_LIST);
-  const data = result;
-
+  const data = renderedAlbums;
   render(element, data);
 }
 
-function inputHandler(event) {
-  event.preventDefault();
+function generateNextAlbumBtn() {
+  const btnNode = document.createElement('button');
 
-  const inputElement = document.querySelector(DOM_SELECTOR.INPUT_BAR_INPUT);
-  ARTIST_NAME = inputElement.value;
-  console.log(ARTIST_NAME);
+  btnNode.classList.add('album-search__next-btn');
+  btnNode.innerHTML = 'Load Next...';
+  btnNode.addEventListener('click', renderAlbumList);
 
-  generateLoader();
-
-  fetchAlbumData().then((json) => {
-    generateAlbumCount(json.resultCount, ARTIST_NAME);
-    renderAlbumList(json.results);
-  });
+  const element = document.querySelector(DOM_SELECTOR.ALBUM_NEXT_BTN_WRAPPER);
+  const data = btnNode;
+  render(element, data);
 }
 
 // INIT
